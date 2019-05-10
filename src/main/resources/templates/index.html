@@ -1,55 +1,45 @@
 <!DOCTYPE HTML>
-<html>
-<head>
-<title>Purple_loginform Website Template | Home :: w3layouts</title>
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<!-- -->
-<script>var __links = document.querySelectorAll('a');function __linkClick(e) { parent.window.postMessage(this.href, '*');} ;for (var i = 0, l = __links.length; i < l; i++) {if ( __links[i].getAttribute('data-t') == '_blank' ) { __links[i].addEventListener('click', __linkClick, false);}}</script>
-<script src="js/jquery.min.js"></script>
-<script>$(document).ready(function(c) {
-	$('.alert-close').on('click', function(c){
-		$('.message').fadeOut('slow', function(c){
-	  		$('.message').remove();
-		});
-	});	  
-});
-</script>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head th:replace="commons :: head('登录')">
+	<title>Messages : Create</title>
 </head>
+
 <body>
-<!-- contact-form -->	
-<div class="message warning">
-<div class="inset">
-	<div class="login-head">
-		<h1>Login Form</h1>
-		 <div class="alert-close"> </div> 			
-	</div>
-		<form>
-			<li>
-				<input type="text" class="text" value="Username" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Username';}"><a href="#" class=" icon user"></a>
-			</li>
-				<div class="clear"> </div>
-			<li>
-				<input type="password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"> <a href="#" class="icon lock"></a>
-			</li>
-			<div class="clear"> </div>
-			<div class="submit">
-				<input type="submit" onclick="myFunction()" value="Sign in" >
-				<h4><a href="#">Lost your Password ?</a></h4>
-						  <div class="clear">  </div>	
+<div class="container" id="particles" >
+	<div class="row">
+		<div class="col-md-12">
+			<h2 class="text-center animated bounceInDown">大学选课系统</h2>
+		</div>
+		<div class="col-md-12" style="margin-top: 100px">
+			<div class="row">
+				<form method="post" action="/login">
+					<div class="form-group">
+						<label for="exampleInputEmail1">账号：</label>
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="account">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">密码：</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+					</div>
+					<div class="radio">
+						<label class="radio-inline">
+							<input type="radio" name="inlineRadioOptions" id="inlineRadio1" checked value="student"> 学生
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="professor"> 教授
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="registrar"> 管理员
+						</label>
+					</div>
+					<button type="submit" class="btn btn-default btn-primary">登录</button>
+				</form>
 			</div>
-				
-		</form>
-		</div>					
+		</div>
 	</div>
-	</div>
-	<div class="clear"> </div>
-<!--- footer --->
-<div class="footer">
-	<p>Copyright &copy; 2014.</p>
 </div>
+
+<div th:replace="commons::footer"></div>
 
 </body>
 </html>

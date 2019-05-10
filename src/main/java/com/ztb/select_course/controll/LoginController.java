@@ -1,7 +1,7 @@
 package com.ztb.select_course.controll;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @Author: 16201533
@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Version 1.0
  */
 @Controller
+
 public class LoginController {
 
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public String login() {
 
         return "login";
