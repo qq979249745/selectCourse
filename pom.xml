@@ -37,7 +37,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
-            <scope>true</scope>
+            <scope>runtime</scope>
+        </dependency>
+<!--        分页查询-->
+        <!-- springboot分页插件 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <!-- 特别注意版本问题, 看到评论以后得以纠正 -->
+            <version>1.2.3</version>
         </dependency>
 <!--        连接池-->
         <dependency>

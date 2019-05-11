@@ -15,5 +15,19 @@ public class SelectCourseApplication {
         SpringApplication.run(SelectCourseApplication.class, args);
 
     }
+   /* @Bean
+    PageHelper pageHelper(){
+        //分页插件
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("reasonable", "true");
+        properties.setProperty("supportMethodsArguments", "true");
+        properties.setProperty("returnPageInfo", "check");
+        properties.setProperty("params", "count=countSql");
+        pageHelper.setProperties(properties);
 
+        //添加插件
+        new SqlSessionFactoryBean().setPlugins(new Interceptor[]{pageHelper});
+        return pageHelper;
+    }*/
 }

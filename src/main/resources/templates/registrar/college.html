@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head th:replace="commons :: head('管理员')">
+    <title>Messages : Create</title>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">大学课程管理系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">教授管理 </a></li>
+                <li><a href="#">学生管理</a></li>
+                <li><a href="#">学院管理</a></li>
+                <li><a href="#">课程管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">注销</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <div class="row">
+        <button class="btn btn-primary" data-toggle="modal" onclick="showModal(true)">增加学院</button>
+        <div class="modal fade" id="modal">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 700px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        <h4 class="modal-title">添加学院</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="college_name_input" class="col-sm-2 control-label">学院名称：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="collegeName" class="form-control" id="college_name_input"
+                                           placeholder="学院名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="college_manager_input" class="col-sm-2 control-label">管理者：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="manager" class="form-control" id="college_manager_input"
+                                           placeholder="管理者">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="college_address_input" class="col-sm-2 control-label">学院地址：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="address" class="form-control" id="college_address_input"
+                                           placeholder="学院地址">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="college_degreeName_input" class="col-sm-2 control-label">学位名称：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="degreeName" class="form-control"
+                                           id="college_degreeName_input" placeholder="学位名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="college_score_input" class="col-sm-2 control-label">学位总学分：</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="score" class="form-control" id="college_score_input"
+                                           placeholder="学位总学分">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="college_studyTime_input" class="col-sm-2 control-label">学位总学时：</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="studyTime" class="form-control"
+                                           id="college_studyTime_input" placeholder="学位总学时">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button id="save_click" type="button" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <table id="table" class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <td>学院id</td>
+                <td>学院名称</td>
+                <td>管理者</td>
+                <td>学院地址</td>
+                <td>学位名称</td>
+                <td>学位总学分</td>
+                <td>学位总学时</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-md-6" id="page_info">
+        </div>
+        <div class="col-md-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination" id="page_nav">
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <script>
+        var click_id,curPage,total,add;
+        $(function () {
+            toPageNum(1);
+        });
+        $("#save_click").click(function () {
+            var data=$("#modal form").serialize();
+            if (!add){data+="&id="+click_id}
+            console.log(data);
+            $.ajax({
+                url: add?'addCollege':'modifyCollege',
+                data: data,
+                type: 'post',
+                success: function (result) {
+                    console.log(result);
+                    if (result.code === 100) {
+                        $('#modal').modal('hide');
+                        toPageNum(add?total:curPage);
+                    } else {
+                        alert(result.extend.error);
+                    }
+                }
+            })
+        });
+        function toPageNum(page) {
+            $.ajax({
+                url: "getColleges",
+                data: "page=" + page,
+                type: "get",
+                success: function (result) {
+                    console.log(result);
+                    build_tables(result.extend.pageInfo.list);
+                    build_page_info(result.extend.pageInfo);
+                    build_page_nav(result.extend.pageInfo);
+                }
+            });
+        }
+        //构建信息表
+        function build_tables(result) {
+            $("#table tbody").empty();
+            $.each(result, function (index, item) {
+                /*address: "南昌航空大学"
+                collegeName: "软件学院"
+                degreeName: "软件工程"
+                id: 1
+                manager: "段老师"
+                score: 30
+                studyTime: 100*/
+                var id = $("<td></td>").append(item.id);
+                var collegeName = $("<td></td>").append(item.collegeName);
+                var manager = $("<td></td>").append(item.manager);
+                var address = $("<td></td>").append(item.address);
+                var degreeName = $("<td></td>").append(item.degreeName);
+                var score = $("<td></td>").append(item.score);
+                var studyTime = $("<td></td>").append(item.studyTime);
+                var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm edit_btn")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-edit")).append("编辑");
+                var trashBtn = $("<button></button>").addClass("btn btn-danger btn-sm").append($("<span></span>").addClass("glyphicon glyphicon-trash")).append("删除");
+                var btnTd = $("<td></td>").append(editBtn, " ", trashBtn);
+                $("<tr></tr>").append(id, collegeName, manager, address, degreeName, score, studyTime, btnTd).appendTo("#table tbody").attr("item_id",item.id);
+            })
+        }
+        //构建分页信息
+        function build_page_info(result) {
+            total=result.pages;curPage=result.pageNum;
+            $("#page_info").empty();
+            $("#page_info").append("当前第" + result.pageNum + "页，总" + result.pages + "页，总" + result.total + "条记录。")
+            total = result.pages;
+        }
+        //构建分页导航条，下次用vue.js，这太不好写了
+        function build_page_nav(result) {
+            $("#page_nav").empty();
+            var firstLi = $("<li></li>").append($("<a></a>").append("首页").attr("href", "javascript:toPageNum(1);"));
+            var preLi = $("<li></li>").append($("<span></span>").append("&laquo;")).click(function () {
+                toPageNum(result.prePage)
+            });
+            var nextLi = $("<li></li>").append($("<span></span>").append("&raquo;")).click(function () {
+                toPageNum(result.nextPage)
+            });
+            var lastLi = $("<li></li>").append($("<a></a>").append("末页").attr("href", "javascript:toPageNum(" + result.pages + ");"));
+
+            if (!result.hasPreviousPage) {
+                firstLi.addClass("disabled");
+                preLi.addClass("disabled").unbind("click");
+            }
+            if (!result.hasNextPage) {
+                nextLi.addClass("disabled").unbind("click");
+                //lastLi.addClass("disabled").firstChild().removeAttr("href");
+            }
+            $("#page_nav").append(firstLi, preLi);
+            $.each(result.navigatepageNums, function (index, item) {
+                var numLi = $("<li></li>").append($("<a></a>").append(item).attr("href", "javascript:toPageNum(" + item + ");"));
+                if (item === result.pageNum) {
+                    numLi.addClass("active");
+                }
+                $("#page_nav").append(numLi);
+            });
+            $("#page_nav").append(nextLi, lastLi);
+        }
+        //编辑
+        $(document).on("click",".edit_btn",function(){
+            click_id=$(this).parent().parent().attr("item_id");
+            console.log(click_id);
+            $.ajax({
+                url: 'getCollege?id='+click_id,
+                type: 'get',
+                success: function (result) {
+                    var data=result.extend.data;
+                    if (result.code === 100) {
+                        showModal(false,data.collegeName,data.manager,data.address,data.degreeName,data.score,data.studyTime);
+                    }
+                }
+            })
+
+        });
+        function showModal(b,p1,p2,p3,p4,p5,p6) {
+            add=b;
+            $("#college_name_input").val(p1);
+            $("#college_manager_input").val(p2);
+            $("#college_address_input").val(p3);
+            $("#college_degreeName_input").val(p4);
+            $("#college_score_input").val(p5);
+            $("#college_studyTime_input").val(p6);
+            $("#modal").modal({
+                backdrop:"static"
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

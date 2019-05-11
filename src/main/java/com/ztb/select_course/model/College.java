@@ -1,14 +1,24 @@
 package com.ztb.select_course.model;
 
+import javax.validation.constraints.Pattern;
+
 public class College {
     private Integer id;
 
+    @Pattern(regexp = ".{2,10}",
+            message = "学院名称格式错误")
     private String collegeName;
 
+    @Pattern(regexp = ".{2,10}",
+            message = "管理员格式错误")
     private String manager;
 
+    @Pattern(regexp = ".{2,100}",
+            message = "地址格式错误")
     private String address;
 
+    @Pattern(regexp = ".{2,10}",
+            message = "学位名格式错误")
     private String degreeName;
 
     private Integer score;

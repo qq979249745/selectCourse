@@ -12,5 +12,18 @@ spring:
     suffix: .html
   mvc:
     static-path-pattern: /static/**
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  freemarker:
+    cache: false
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
