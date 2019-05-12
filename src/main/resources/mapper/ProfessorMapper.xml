@@ -8,6 +8,10 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="college_id" property="collegeId" jdbcType="INTEGER" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <association property="college" javaType="com.ztb.select_course.model.College">
+      <id column="college_id" property="id"/>
+      <result column="college_name" property="collegeName"/>
+    </association>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, account, password, name, college_id, phone
+    p.id, account, password, name, college_id, phone ,college_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ztb.select_course.model.ProfessorExample" >
     select
@@ -76,7 +80,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_professor
+    from tb_professor p join tb_college c on p.college_id=c.id
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

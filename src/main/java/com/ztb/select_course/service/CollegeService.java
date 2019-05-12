@@ -33,4 +33,9 @@ public class CollegeService {
         int i = collegeMapper.updateByPrimaryKey(college);
         return i>0;
     }
+
+    public boolean deleteCollege(Integer id) {
+        int i = collegeMapper.deleteByPrimaryKey(id);
+        return i>0;
+    }
 }

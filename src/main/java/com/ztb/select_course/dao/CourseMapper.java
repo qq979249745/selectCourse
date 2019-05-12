@@ -23,10 +23,10 @@ public interface CourseMapper {
 
     @Insert({
         "insert into tb_course (id, name, ",
-        "course_score, rank, ",
+        "course_score, level, ",
         "fee)",
         "values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, ",
-        "#{courseScore,jdbcType=INTEGER}, #{rank,jdbcType=VARCHAR}, ",
+        "#{courseScore,jdbcType=INTEGER}, #{level,jdbcType=VARCHAR}, ",
         "#{fee,jdbcType=INTEGER})"
     })
     int insert(Course record);
@@ -37,7 +37,7 @@ public interface CourseMapper {
 
     @Select({
         "select",
-        "id, name, course_score, rank, fee",
+        "id, name, course_score, level, fee",
         "from tb_course",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -54,7 +54,7 @@ public interface CourseMapper {
         "update tb_course",
         "set name = #{name,jdbcType=VARCHAR},",
           "course_score = #{courseScore,jdbcType=INTEGER},",
-          "rank = #{rank,jdbcType=VARCHAR},",
+          "level = #{level,jdbcType=VARCHAR},",
           "fee = #{fee,jdbcType=INTEGER}",
         "where id = #{id,jdbcType=INTEGER}"
     })

@@ -10,6 +10,10 @@
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="birthday" property="birthday" jdbcType="DATE" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <association property="college" javaType="com.ztb.select_course.model.College">
+      <id column="college_id" property="id"/>
+      <result column="college_name" property="collegeName"/>
+    </association>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, account, password, name, college_id, address, birthday, phone
+    s.id, account, password, name, college_id, s.address, birthday, phone,college_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ztb.select_course.model.StudentExample" >
     select
@@ -78,7 +82,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_student
+    from tb_student s join tb_college c on s.college_id=c.id
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

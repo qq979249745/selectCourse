@@ -9,6 +9,7 @@ import com.ztb.select_course.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class LoginService {
     private StudentMapper studentMapper;
     @Autowired
     private RegistrarMapper registrarMapper;
-    public RestResponse valid(User user) {
+    public RestResponse valid(User user, HttpServletRequest request) {
         switch (user.getUserType()){
             case "registrar":
                 RegistrarExample registrarExample=new RegistrarExample();
@@ -31,6 +32,7 @@ public class LoginService {
                 rc.andPasswordEqualTo(user.getPassword());
                 List<Registrar> registrars = registrarMapper.selectByExample(registrarExample);
                 if (registrars.size()>0){
+                    request.getSession().setAttribute("user",user);
                     return RestResponse.success().add("success","registrar");
                 }
                 break;

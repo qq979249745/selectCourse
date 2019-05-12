@@ -4,10 +4,12 @@ package com.ztb.select_course;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
 
 @SpringBootApplication(scanBasePackages = {"com.ztb.select_course"})
 @MapperScan(basePackages = "com.ztb.select_course.dao")
+@ServletComponentScan(basePackages = "com.ztb.select_course.controller")
 public class SelectCourseApplication {
 
     public static void main(String[] args) {

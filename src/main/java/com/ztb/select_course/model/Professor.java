@@ -1,17 +1,37 @@
 package com.ztb.select_course.model;
 
+import javax.validation.constraints.Pattern;
+
 public class Professor {
     private Integer id;
 
+    @Pattern(regexp = ".{5,10}",
+            message = "教授账号格式错误")
     private String account;
 
+    @Pattern(regexp = ".{5,16}",
+            message = "教授密码格式错误")
     private String password;
 
+    @Pattern(regexp = ".{2,20}",
+            message = "教授名字格式错误")
     private String name;
 
     private Integer collegeId;
 
+    @Pattern(regexp = "\\d{11}",
+            message = "教授手机号格式错误")
     private String phone;
+
+    private College college;
+
+    public College getCollege() {
+        return college;
+    }
+
+    public void setCollege(College college) {
+        this.college = college;
+    }
 
     public Integer getId() {
         return id;

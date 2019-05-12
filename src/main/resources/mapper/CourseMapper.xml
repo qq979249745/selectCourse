@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="course_score" property="courseScore" jdbcType="INTEGER" />
-    <result column="rank" property="rank" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
     <result column="fee" property="fee" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -67,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, course_score, rank, fee
+    id, name, course_score, level, fee
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ztb.select_course.model.CourseExample" >
     select
@@ -101,8 +101,8 @@
       <if test="courseScore != null" >
         course_score,
       </if>
-      <if test="rank != null" >
-        rank,
+      <if test="level != null" >
+        level,
       </if>
       <if test="fee != null" >
         fee,
@@ -118,8 +118,8 @@
       <if test="courseScore != null" >
         #{courseScore,jdbcType=INTEGER},
       </if>
-      <if test="rank != null" >
-        #{rank,jdbcType=VARCHAR},
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
       </if>
       <if test="fee != null" >
         #{fee,jdbcType=INTEGER},
@@ -144,8 +144,8 @@
       <if test="record.courseScore != null" >
         course_score = #{record.courseScore,jdbcType=INTEGER},
       </if>
-      <if test="record.rank != null" >
-        rank = #{record.rank,jdbcType=VARCHAR},
+      <if test="record.level != null" >
+        level = #{record.level,jdbcType=VARCHAR},
       </if>
       <if test="record.fee != null" >
         fee = #{record.fee,jdbcType=INTEGER},
@@ -160,7 +160,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       course_score = #{record.courseScore,jdbcType=INTEGER},
-      rank = #{record.rank,jdbcType=VARCHAR},
+      level = #{record.level,jdbcType=VARCHAR},
       fee = #{record.fee,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -175,8 +175,8 @@
       <if test="courseScore != null" >
         course_score = #{courseScore,jdbcType=INTEGER},
       </if>
-      <if test="rank != null" >
-        rank = #{rank,jdbcType=VARCHAR},
+      <if test="level != null" >
+        level = #{level,jdbcType=VARCHAR},
       </if>
       <if test="fee != null" >
         fee = #{fee,jdbcType=INTEGER},

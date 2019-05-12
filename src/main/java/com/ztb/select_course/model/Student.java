@@ -1,23 +1,46 @@
 package com.ztb.select_course.model;
 
-import java.util.Date;
+import javax.validation.constraints.Pattern;
 
 public class Student {
     private Integer id;
 
+    @Pattern(regexp = ".{5,10}",
+            message = "学生账号格式错误")
     private String account;
 
+    @Pattern(regexp = ".{5,16}",
+            message = "学生密码格式错误")
     private String password;
 
+    @Pattern(regexp = ".{2,16}",
+            message = "姓名")
     private String name;
+
 
     private Integer collegeId;
 
+    @Pattern(regexp = ".{1,100}",
+            message = "学生地址格式错误")
     private String address;
 
-    private Date birthday;
+    @Pattern(regexp = "\\d{4}-\\d{1,2}-\\d{1,2}",
+            message = "日期格式错误")
+    private String birthday;
 
+    @Pattern(regexp = "\\d{11}$",
+            message = "手机号格式错误")
     private String phone;
+
+    private College college;
+
+    public College getCollege() {
+        return college;
+    }
+
+    public void setCollege(College college) {
+        this.college = college;
+    }
 
     public Integer getId() {
         return id;
@@ -67,11 +90,11 @@ public class Student {
         this.address = address == null ? null : address.trim();
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

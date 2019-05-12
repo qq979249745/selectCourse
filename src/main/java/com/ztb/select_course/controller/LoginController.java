@@ -1,4 +1,4 @@
-package com.ztb.select_course.controll;
+package com.ztb.select_course.controller;
 
 import com.ztb.select_course.model.RestResponse;
 import com.ztb.select_course.model.User;
@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -21,12 +23,18 @@ public class LoginController {
     private LoginService loginService;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public RestResponse login(@Valid User user, BindingResult result) {
+    public RestResponse login(@Valid User user, BindingResult result, HttpServletRequest request) {
 
         if (result.hasErrors()){
             return RestResponse.fail().add("error",result.getAllErrors().get(0).getDefaultMessage());
         }else {
-            return loginService.valid(user);
+            return loginService.valid(user,request);
         }
+    }
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        return "/";
     }
 }

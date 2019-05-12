@@ -1,64 +1,53 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
-<head th:replace="commons :: head('学院管理')">
+<head th:replace="commons :: head('课程管理')">
     <title>Messages : Create</title>
 </head>
 <body>
-<div th:insert="registrar/registrar::nav(2)">
+<div th:insert="registrar/registrar::nav(3)">
 </div>
 
 <div class="container">
     <div class="row">
-        <button class="btn btn-primary" data-toggle="modal" onclick="showModal(true)">增加学院</button>
+        <button class="btn btn-primary" data-toggle="modal" onclick="showModal(true)">增加课程</button>
         <div class="modal fade" id="modal">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 700px;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                        <h4 class="modal-title">添加学院</h4>
+                        <h4 class="modal-title">课程管理</h4>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label for="college_name_input" class="col-sm-2 control-label">学院名称：</label>
+                                <label for="name_input" class="col-sm-2 control-label">课程名称：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="collegeName" class="form-control" id="college_name_input"
-                                           placeholder="学院名称">
+                                    <input type="text" name="name" class="form-control" id="name_input"
+                                           placeholder="课程名称">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="college_manager_input" class="col-sm-2 control-label">管理者：</label>
+                                <label for="courseScore_input" class="col-sm-2 control-label">课程学分：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="manager" class="form-control" id="college_manager_input"
-                                           placeholder="管理者">
+                                    <input type="number" name="courseScore" class="form-control" id="courseScore_input"
+                                           placeholder="课程学分">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="college_address_input" class="col-sm-2 control-label">学院地址：</label>
+                                <label for="rank_input" class="col-sm-2 control-label">课程级别：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="address" class="form-control" id="college_address_input"
-                                           placeholder="学院地址">
+                                    <select name="level" class="form-control" id="rank_input">
+                                        <option selected value="高">高</option>
+                                        <option value="中">中</option>
+                                        <option value="低">低</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="college_degreeName_input" class="col-sm-2 control-label">学位名称：</label>
+                                <label for="fee_input" class="col-sm-2 control-label">课程费用：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="degreeName" class="form-control"
-                                           id="college_degreeName_input" placeholder="学位名称">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="college_score_input" class="col-sm-2 control-label">学位总学分：</label>
-                                <div class="col-sm-10">
-                                    <input type="number" name="score" class="form-control" id="college_score_input"
-                                           placeholder="学位总学分">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="college_studyTime_input" class="col-sm-2 control-label">学位总学时：</label>
-                                <div class="col-sm-10">
-                                    <input type="number" name="studyTime" class="form-control"
-                                           id="college_studyTime_input" placeholder="学位总学时">
+                                    <input type="number" name="fee" class="form-control"
+                                           id="fee_input" placeholder="课程费用">
                                 </div>
                             </div>
                         </form>
@@ -75,13 +64,11 @@
         <table id="table" class="table table-responsive table-hover">
             <thead>
             <tr>
-                <td>学院id</td>
-                <td>学院名称</td>
-                <td>管理者</td>
-                <td>学院地址</td>
-                <td>学位名称</td>
-                <td>学位总学分</td>
-                <td>学位总学时</td>
+                <td>课程id</td>
+                <td>课程名称</td>
+                <td>课程学分</td>
+                <td>课程级别</td>
+                <td>课程费用</td>
                 <td>操作</td>
             </tr>
             </thead>
@@ -107,7 +94,7 @@
             var data=$("#modal form").serialize();
             if (!add){data+="&id="+click_id}
             $.ajax({
-                url: add?'addCollege':'modifyCollege',
+                url: add?'addCourse':'modifyCourse',
                 data: data,
                 type: 'post',
                 success: function (result) {
@@ -122,7 +109,7 @@
         });
         function toPageNum(page) {
             $.ajax({
-                url: "getColleges",
+                url: "getCourses",
                 data: "page=" + page,
                 type: "get",
                 success: function (result) {
@@ -137,18 +124,16 @@
             $("#table tbody").empty();
             $.each(result, function (index, item) {
                 var id = $("<td></td>").append(item.id);
-                var collegeName = $("<td></td>").append(item.collegeName);
-                var manager = $("<td></td>").append(item.manager);
-                var address = $("<td></td>").append(item.address);
-                var degreeName = $("<td></td>").append(item.degreeName);
-                var score = $("<td></td>").append(item.score);
-                var studyTime = $("<td></td>").append(item.studyTime);
+                var name = $("<td></td>").append(item.name);
+                var courseScore = $("<td></td>").append(item.courseScore);
+                var level = $("<td></td>").append(item.level);
+                var fee = $("<td></td>").append(item.fee);
                 var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm edit_btn")
                     .append($("<span></span>").addClass("glyphicon glyphicon-edit")).append("编辑");
                 var trashBtn = $("<button></button>").addClass("btn btn-danger btn-sm trash_btn")
                     .append($("<span></span>").addClass("glyphicon glyphicon-trash")).append("删除");
                 var btnTd = $("<td></td>").append(editBtn, " ", trashBtn);
-                $("<tr></tr>").append(id, collegeName, manager, address, degreeName, score, studyTime, btnTd).appendTo("#table tbody").attr("item_id",item.id);
+                $("<tr></tr>").append(id, name, courseScore, level, fee,  btnTd).appendTo("#table tbody").attr("item_id",item.id);
             })
         }
         //构建分页信息
@@ -192,12 +177,12 @@
         $(document).on("click",".edit_btn",function(){
             click_id=$(this).parent().parent().attr("item_id");
             $.ajax({
-                url: 'getCollege?id='+click_id,
+                url: 'getCourse?id='+click_id,
                 type: 'get',
                 success: function (result) {
                     var data=result.extend.data;
                     if (result.code === 100) {
-                        showModal(false,data.collegeName,data.manager,data.address,data.degreeName,data.score,data.studyTime);
+                        showModal(false,data.name,data.courseScore,data.level,data.fee);
                     }
                 }
             })
@@ -208,7 +193,7 @@
             var name = $(this).parents("tr").find("td:eq(1)").text();
             if(confirm("确定删除"+name+"吗？")){
                 $.ajax({
-                    url: 'deleteCollege?id='+click_id,
+                    url: 'deleteCourse?id='+click_id,
                     type: 'get',
                     success: function (result) {
                         toPageNum(curPage);
@@ -217,14 +202,11 @@
                 })
             }
         });
-        function showModal(b,p1,p2,p3,p4,p5,p6) {
+        function showModal(b,p1,p2,p3,p4) {
             add=b;
-            $("#college_name_input").val(p1);
-            $("#college_manager_input").val(p2);
-            $("#college_address_input").val(p3);
-            $("#college_degreeName_input").val(p4);
-            $("#college_score_input").val(p5);
-            $("#college_studyTime_input").val(p6);
+            $("#name_input").val(p1);
+            $("#courseScore_input").val(p2);
+            $("#fee_input").val(p4);
             $("#modal").modal({
                 backdrop:"static"
             });

@@ -1,13 +1,17 @@
 package com.ztb.select_course.model;
 
+import javax.validation.constraints.Pattern;
+
 public class Course {
     private Integer id;
 
+    @Pattern(regexp = ".{2,10}",
+            message = "课程名称格式错误")
     private String name;
 
     private Integer courseScore;
 
-    private String rank;
+    private String level;
 
     private Integer fee;
 
@@ -35,12 +39,12 @@ public class Course {
         this.courseScore = courseScore;
     }
 
-    public String getRank() {
-        return rank;
+    public String getLevel() {
+        return level;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank == null ? null : rank.trim();
+    public void setLevel(String level) {
+        this.level = level == null ? null : level.trim();
     }
 
     public Integer getFee() {

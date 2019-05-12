@@ -37,12 +37,13 @@ public interface ProfessorMapper {
 
     @Select({
         "select",
-        "id, account, password, name, college_id, phone",
-        "from tb_professor",
-        "where id = #{id,jdbcType=INTEGER}"
+        "p.id, account, password, name, college_id, phone ,college_name",
+        "from tb_professor p join tb_college c on p.college_id=c.id",
+        "where p.id = #{id,jdbcType=INTEGER}"
     })
     @ResultMap("BaseResultMap")
     Professor selectByPrimaryKey(Integer id);
+
 
     int updateByExampleSelective(@Param("record") Professor record, @Param("example") ProfessorExample example);
 
