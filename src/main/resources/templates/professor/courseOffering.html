@@ -1,52 +1,34 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
-<head th:replace="commons :: head('课程管理')">
+<head th:replace="commons :: head('制定课程计划表')">
     <title>Messages : Create</title>
 </head>
 <body>
-<div th:insert="registrar/registrar::nav(3)">
+<div th:insert="professor/professor::nav(0)">
 </div>
 
 <div class="container">
     <div class="row">
-        <button class="btn btn-primary" data-toggle="modal" onclick="showModal(true)">增加课程</button>
         <div class="modal fade" id="modal">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 700px;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                        <h4 class="modal-title">课程管理</h4>
+                        <h4 class="modal-title">请选择先择课程(可以为空)</h4>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
                             <div class="form-group">
+                                <label for="semId" class="col-sm-2 control-label">学年度：</label>
+                                <div class="col-sm-10">
+                                    <input hidden id="semId" name="semId" >
+                                    <div  id="sem"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="name_input" class="col-sm-2 control-label">课程名称：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="name" class="form-control" id="name_input"
-                                           placeholder="课程名称">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="courseScore_input" class="col-sm-2 control-label">课程学分：</label>
-                                <div class="col-sm-10">
-                                    <input type="number" name="courseScore" class="form-control" id="courseScore_input"
-                                           placeholder="课程学分">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="rank_input" class="col-sm-2 control-label">课程级别：</label>
-                                <div class="col-sm-10">
-                                    <select name="level" class="form-control" id="rank_input">
-                                        <option selected value="必修">必修</option>
-                                        <option value="选修">选修</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="fee_input" class="col-sm-2 control-label">课程费用：</label>
-                                <div class="col-sm-10">
-                                    <input type="number" name="fee" class="form-control"
-                                           id="fee_input" placeholder="课程费用">
+                                    <select name="prerequisite" class="form-control" id="name_input"></select>
                                 </div>
                             </div>
                         </form>
@@ -63,10 +45,10 @@
         <table id="table" class="table table-responsive table-hover">
             <thead>
             <tr>
-                <td>课程id</td>
-                <td>课程名称</td>
+                <td>课程号</td>
+                <td>课程名</td>
                 <td>课程学分</td>
-                <td>课程级别</td>
+                <td>类型</td>
                 <td>课程费用</td>
                 <td>操作</td>
             </tr>
@@ -86,24 +68,20 @@
     </div>
     <div th:replace="commons::footer"></div>
     <script>
-        var click_id,curPage,total,add;
+        var click_id, curPage, total;
         $(function () {
             toPageNum(1);
         });
         $("#save_click").click(function () {
-            var data=$("#modal form").serialize();
-            if (!add){data+="&id="+click_id}
+            var data=$("#modal form").serialize()+"&courseId="+click_id;
             $.ajax({
-                url: add?'addCourse':'modifyCourse',
+                url: 'addCourseOffering',
                 data: data,
                 type: 'post',
                 success: function (result) {
-                    if (result.code === 100) {
-                        $('#modal').modal('hide');
-                        toPageNum(add?total:curPage);
-                    } else {
-                        alert(result.extend.error);
-                    }
+                   alert(result.extend.data);
+                   toPageNum(curPage);
+                   if (result.code===100)$('#modal').modal('hide');
                 }
             })
         });
@@ -119,6 +97,7 @@
                 }
             });
         }
+
         //构建信息表
         function build_tables(result) {
             $("#table tbody").empty();
@@ -128,22 +107,23 @@
                 var courseScore = $("<td></td>").append(item.courseScore);
                 var level = $("<td></td>").append(item.level);
                 var fee = $("<td></td>").append(item.fee);
-                var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm edit_btn")
-                    .append($("<span></span>").addClass("glyphicon glyphicon-edit")).append("编辑");
-                var trashBtn = $("<button></button>").addClass("btn btn-danger btn-sm trash_btn")
-                    .append($("<span></span>").addClass("glyphicon glyphicon-trash")).append("删除");
-                var btnTd = $("<td></td>").append(editBtn, " ", trashBtn);
-                $("<tr></tr>").append(id, name, courseScore, level, fee,  btnTd).appendTo("#table tbody").attr("item_id",item.id);
+                var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm select_btn")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-edit")).append("选择");
+                var btnTd = $("<td></td>").append(editBtn);
+                $("<tr></tr>").append(id, name, courseScore, level, fee, btnTd).appendTo("#table tbody").attr("item_id", item.id);
             })
         }
+
         //构建分页信息
         function build_page_info(result) {
-            total=result.pages;curPage=result.pageNum;
+            total = result.pages;
+            curPage = result.pageNum;
             $("#page_info").empty();
             $("#page_info").append("当前第" + result.pageNum + "页，总" + result.pages + "页，总" + result.total + "条记录。")
             total = result.pages;
         }
-        //构建分页导航条，下次用vue.js，这太不好写了
+
+        //构建分页导航条
         function build_page_nav(result) {
             $("#page_nav").empty();
             var firstLi = $("<li></li>").append($("<a></a>").append("首页").attr("href", "javascript:toPageNum(1);"));
@@ -173,44 +153,40 @@
             });
             $("#page_nav").append(nextLi, lastLi);
         }
-        //编辑
-        $(document).on("click",".edit_btn",function(){
-            click_id=$(this).parent().parent().attr("item_id");
+
+        //选择课程
+        $(document).on("click", ".select_btn", function () {
+            click_id = $(this).parent().parent().attr("item_id");
             $.ajax({
-                url: 'getCourse?id='+click_id,
+                url: 'getSem',
                 type: 'get',
                 success: function (result) {
-                    var data=result.extend.data;
+                    $('#semId').val(result.extend.data.id);
+                    $('#sem').append(result.extend.data.sem);
+                }
+            });
+            $.ajax({
+                url: 'getAllCourses?id=' + click_id,
+                type: 'get',
+                success: function (result) {
+                    $('#name_input').empty();
+                    var optionEle = $("<option></option>").append(this.name).attr("value",null);
+                    optionEle.appendTo('#name_input');
+                    var data = result.extend.data;
                     if (result.code === 100) {
-                        showModal(false,data.name,data.courseScore,data.level,data.fee);
+                        $.each(data,function(){
+                            var optionEle = $("<option></option>").append(this.name).attr("value",this.id);
+                            optionEle.appendTo('#name_input');
+                        });
+                        $("#modal").modal({
+                            backdrop: "static"
+                        });
                     }
                 }
             })
         });
-        //删除
-        $(document).on("click",".trash_btn",function(){
-            click_id=$(this).parent().parent().attr("item_id");
-            var name = $(this).parents("tr").find("td:eq(1)").text();
-            if(confirm("确定删除"+name+"吗？")){
-                $.ajax({
-                    url: 'deleteCourse?id='+click_id,
-                    type: 'get',
-                    success: function (result) {
-                        toPageNum(curPage);
-                        alert(result.extend.message);
-                    }
-                })
-            }
-        });
-        function showModal(b,p1,p2,p3,p4) {
-            add=b;
-            $("#name_input").val(p1);
-            $("#courseScore_input").val(p2);
-            $("#fee_input").val(p4);
-            $("#modal").modal({
-                backdrop:"static"
-            });
-        }
+
+
     </script>
 </div>
 </body>

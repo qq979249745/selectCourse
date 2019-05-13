@@ -36,13 +36,14 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!--生成对应表及类名-->
-        <table tableName="tb_college" domainObjectName="College"/>
+        <!--<table tableName="tb_college" domainObjectName="College"/>
         <table tableName="tb_course" domainObjectName="Course"/>
         <table tableName="tb_courseoffering" domainObjectName="CourseOffering"/>
         <table tableName="tb_professor" domainObjectName="Professor"/>
         <table tableName="tb_registrar" domainObjectName="Registrar"/>
         <table tableName="tb_sem" domainObjectName="Sem" enableCountByExample="false"/>
-        <table tableName="tb_student" domainObjectName="Student"/>
+        <table tableName="tb_student" domainObjectName="Student"/>-->
+<!--        <table tableName="tb_study" domainObjectName="Study"/>-->
         <table tableName="tb_studyprogram" domainObjectName="StudyProgram"/>
     </context>
 </generatorConfiguration>

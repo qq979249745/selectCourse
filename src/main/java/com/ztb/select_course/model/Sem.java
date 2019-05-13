@@ -1,11 +1,10 @@
 package com.ztb.select_course.model;
 
-import java.util.Date;
 
 public class Sem {
     private Integer id;
 
-    private Date sem;
+    private String sem;
 
     public Integer getId() {
         return id;
@@ -15,11 +14,11 @@ public class Sem {
         this.id = id;
     }
 
-    public Date getSem() {
+    public String getSem() {
         return sem;
     }
 
-    public void setSem(Date sem) {
+    public void setSem(String sem) {
         this.sem = sem;
     }
 }

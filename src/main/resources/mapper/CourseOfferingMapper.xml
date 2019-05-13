@@ -8,6 +8,28 @@
     <result column="professor_id" property="professorId" jdbcType="INTEGER" />
     <result column="prerequisite" property="prerequisite" jdbcType="INTEGER" />
     <result column="order_num" property="orderNum" jdbcType="INTEGER" />
+    <!--<association property="semId" javaType="com.ztb.select_course.model.Sem">
+      <id column="sem_id" property="id"/>
+      <result column="sem" property="sem" jdbcType="DATE" />
+    </association>
+    <association property="course" javaType="com.ztb.select_course.model.Course">
+      <id column="course_id" property="id"/>
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="course_score" property="courseScore" jdbcType="INTEGER" />
+      <result column="level" property="level" jdbcType="VARCHAR" />
+      <result column="fee" property="fee" jdbcType="INTEGER" />
+    </association>
+    <association property="professorId" javaType="com.ztb.select_course.model.Professor">
+      <id column="sem_id" property="id"/>
+      <result column="sem" property="sem" jdbcType="DATE" />
+    </association>
+    <association property="prerequisite" javaType="com.ztb.select_course.model.Course">
+      <id column="prerequisite" property="id"/>
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="course_score" property="courseScore" jdbcType="INTEGER" />
+      <result column="level" property="level" jdbcType="VARCHAR" />
+      <result column="fee" property="fee" jdbcType="INTEGER" />
+    </association>-->
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >

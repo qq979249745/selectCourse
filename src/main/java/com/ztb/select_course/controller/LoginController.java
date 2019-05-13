@@ -4,6 +4,7 @@ import com.ztb.select_course.model.RestResponse;
 import com.ztb.select_course.model.User;
 import com.ztb.select_course.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,13 @@ import javax.validation.Valid;
  * @Version 1.0
  */
 
-@RestController
+@Controller
 public class LoginController {
     @Autowired
     private LoginService loginService;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ResponseBody
     public RestResponse login(@Valid User user, BindingResult result, HttpServletRequest request) {
 
         if (result.hasErrors()){
@@ -31,7 +33,23 @@ public class LoginController {
             return loginService.valid(user,request);
         }
     }
+    @RequestMapping("/registrar")
+    public String registrar() {
+        return "redirect:registrar/professor";
+    }
+
+    @RequestMapping("/professor")
+    public String professor(){
+        return "redirect:professor/courseOffering";
+    }
+
+    @RequestMapping("/student")
+    public String student(){
+        return "redirect:student/study";
+    }
+
     @RequestMapping("/logout")
+    @ResponseBody
     public String logout(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.removeAttribute("user");

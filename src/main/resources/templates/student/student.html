@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
-<head >
+<head th:replace="registrar :: head('学生选课界面')">
     <title>Messages : Create</title>
 </head>
 <body>
@@ -19,17 +19,15 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li th:class="${index}==0?'active':''"><a href="/registrar/professor">教授管理</a></li>
-                    <li th:class="${index}==1?'active':''"><a href="/registrar/student">学生管理</a></li>
-                    <li th:class="${index}==2?'active':''"><a href="/registrar/college">学院管理</a></li>
-                    <li th:class="${index}==3?'active':''"><a href="/registrar/course">课程管理</a></li>
+                    <li th:class="${index}==0?'active':''"><a href="/student/study">制定学习计划</a></li>
+                    <li th:class="${index}==1?'active':''"><a href="/registrar/college">查询课程注册费用</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:text="${session.user.account}"></a></li>
                     <li><a href="/logout">注销</a></li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+            </div>
+        </div>
     </nav>
 </div>
 

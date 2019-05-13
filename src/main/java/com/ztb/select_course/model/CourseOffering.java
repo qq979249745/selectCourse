@@ -13,6 +13,46 @@ public class CourseOffering {
 
     private Integer orderNum;
 
+    private Sem sem;
+
+    private Course course;
+
+    private Professor professor;
+
+    private Course preCoures;//先决课程
+
+    public Sem getSem() {
+        return sem;
+    }
+
+    public void setSem(Sem sem) {
+        this.sem = sem;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Course getPreCoures() {
+        return preCoures;
+    }
+
+    public void setPreCoures(Course preCoures) {
+        this.preCoures = preCoures;
+    }
+
     public Integer getId() {
         return id;
     }

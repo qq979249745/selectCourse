@@ -22,12 +22,10 @@ public interface StudyProgramMapper {
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into tb_studyprogram (id, sem_id, ",
-        "stu_id, course_id, ",
-        "state)",
-        "values (#{id,jdbcType=INTEGER}, #{semId,jdbcType=INTEGER}, ",
-        "#{stuId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, ",
-        "#{state,jdbcType=VARCHAR})"
+        "insert into tb_studyprogram (id, study_id, ",
+        "courseOffering_id, state)",
+        "values (#{id,jdbcType=INTEGER}, #{studyId,jdbcType=INTEGER}, ",
+        "#{courseofferingId,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR})"
     })
     int insert(StudyProgram record);
 
@@ -37,7 +35,7 @@ public interface StudyProgramMapper {
 
     @Select({
         "select",
-        "id, sem_id, stu_id, course_id, state",
+        "id, study_id, courseOffering_id, state",
         "from tb_studyprogram",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -52,9 +50,8 @@ public interface StudyProgramMapper {
 
     @Update({
         "update tb_studyprogram",
-        "set sem_id = #{semId,jdbcType=INTEGER},",
-          "stu_id = #{stuId,jdbcType=INTEGER},",
-          "course_id = #{courseId,jdbcType=INTEGER},",
+        "set study_id = #{studyId,jdbcType=INTEGER},",
+          "courseOffering_id = #{courseofferingId,jdbcType=INTEGER},",
           "state = #{state,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
