@@ -8,13 +8,6 @@
 </div>
 
 <div class="container">
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li class="active"><a href="#">Library</a></li>
-            <li>Data</li>
-        </ol>
-    </div>
 
     <div class="row">
         <button class="btn btn-primary" data-toggle="modal" onclick="addStudy()">新建学习计划</button>
@@ -209,6 +202,19 @@
             });
             $("#page_nav").append(nextLi, lastLi);
         }
+        //提交
+        $(document).on("click",".submit_btn",function(){
+            click_id=$(this).parent().parent().attr("item_id");
+            $.ajax({
+                url: 'submitStudy?id='+click_id,
+                type: 'get',
+                success: function (result) {
+                    console.log(result);
+                    alert(result.extend.data);
+                    toPageNum(curPage);
+                }
+            })
+        });
         //编辑
         $(document).on("click",".edit_btn",function(){
             click_id=$(this).parent().parent().attr("item_id");
@@ -217,14 +223,14 @@
         //删除
         $(document).on("click",".trash_btn",function(){
             click_id=$(this).parent().parent().attr("item_id");
-            var name = $(this).parents("tr").find("td:eq(1)").text();
-            if(confirm("确定删除"+name+"吗？")){
+            if(confirm("确定删除这个学习计划吗？")){
                 $.ajax({
-                    url: 'deleteCollege?id='+click_id,
+                    url: 'deleteStudy?id='+click_id,
                     type: 'get',
                     success: function (result) {
+                        console.log(result);
+                        alert(result.extend.data);
                         toPageNum(curPage);
-                        alert(result.extend.message);
                     }
                 })
             }

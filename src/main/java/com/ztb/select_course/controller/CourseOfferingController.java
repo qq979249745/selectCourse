@@ -41,12 +41,16 @@ public class CourseOfferingController {
     public String modifyOffering(){
         return "professor/modifyOffering";
     }
+    @RequestMapping("/checkStudent")
+    public String checkStudent(){
+        return "professor/checkStudent";
+    }
 
     @ResponseBody
     @RequestMapping("/getCourses")//去除已在课程表的课程
     public RestResponse getCourses(@RequestParam(name = "page", defaultValue = "1") Integer page) {
         Professor professor = (Professor) request.getSession().getAttribute("professor");
-        PageHelper.startPage(page, 5);
+        PageHelper.startPage(page, 10);
         List<Course> list = courseService.getAllNotIn(professor.getId());
         return RestResponse.success().add("pageInfo", new PageInfo<>(list, 5));
     }
@@ -86,5 +90,19 @@ public class CourseOfferingController {
     public RestResponse modifyPreCourse(CourseOffering courseOffering){
         return courseOfferingService.modifyPreCourse(courseOffering)
                 ?RestResponse.success().add("data","修改成功"):RestResponse.fail().add("data","修改失败");
+    }
+    @ResponseBody
+    @RequestMapping("/deleteOffering")
+    public RestResponse deleteOffering(Integer id){
+        return courseOfferingService.deleteOffering(id)
+                ?RestResponse.success().add("data","删除成功"):RestResponse.fail().add("data","删除失败");
+    }
+    @ResponseBody
+    @RequestMapping("/getSelectStudent")
+    public RestResponse getSelectStudent(Integer id){
+        List<Student> selectStudent = courseOfferingService.getSelectStudent(id);
+
+        return selectStudent!=null
+                ?RestResponse.success().add("data",selectStudent):RestResponse.fail().add("data","没有学生");
     }
 }

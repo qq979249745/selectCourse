@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
-<head th:replace="commons :: head('修改课程计划表')">
+<head th:replace="commons :: head('查看选课学生')">
     <title>Messages : Create</title>
 </head>
 <body>
-<div th:insert="professor/professor::nav(1)">
+<div th:insert="professor/professor::nav(2)">
 </div>
 
 <div class="container">
@@ -17,18 +17,21 @@
                         <h4 class="modal-title">修改先决课程</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="name_input" class="col-sm-2 control-label">课程名称：</label>
-                                <div class="col-sm-10">
-                                    <select name="prerequisite" class="form-control" id="name_input"></select>
-                                </div>
-                            </div>
-                        </form>
+                        <table id="table1" class="table table-responsive table-hover">
+                            <thead>
+                            <tr>
+                                <td>姓名</td>
+                                <td>学院</td>
+                                <td>地址</td>
+                                <td>出生日期</td>
+                                <td>手机号</td>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button id="save_click" type="button" class="btn btn-primary">保存</button>
                     </div>
                 </div>
             </div>
@@ -46,7 +49,7 @@
                 <td>课程费用</td>
                 <td>先决课程</td>
                 <td>已选课程人数</td>
-                <td>操作</td>
+                <td>查看</td>
             </tr>
             </thead>
             <tbody></tbody>
@@ -67,19 +70,6 @@
         var click_id, curPage, total;
         $(function () {
             toPageNum(1);
-        });
-        $("#save_click").click(function () {
-            var data=$("#modal form").serialize()+"&id="+click_id;
-            $.ajax({
-                url: 'modifyPreCourse',
-                data: data,
-                type: 'post',
-                success: function (result) {
-                   alert(result.extend.data);
-                   toPageNum(curPage);
-                   if (result.code===100)$('#modal').modal('hide');
-                }
-            })
         });
         function toPageNum(page) {
             $.ajax({
@@ -107,29 +97,12 @@
                 var fee = $("<td></td>").append(item.course.fee);
                 var preName = $("<td></td>").append(item.preCoures==null?"无":item.preCoures.name);
                 var orderNum = $("<td></td>").append(item.orderNum);
-                var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm edit_btn")
-                    .append($("<span></span>").addClass("glyphicon glyphicon-edit")).append("修改");
-                var trashBtn = $("<button></button>").addClass("btn btn-danger btn-sm trash_btn")
-                    .append($("<span></span>").addClass("glyphicon glyphicon-trash")).append("删除");
-                var btnTd = $("<td></td>").append(editBtn," ",trashBtn);
+                var check = $("<button></button>").addClass("btn btn-primary btn-sm check_student")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-edit")).append("查看");
+                var btnTd = $("<td></td>").append(check);
                 $("<tr></tr>").append(id, sem,course,name, courseScore, level, fee,preName,orderNum, btnTd).appendTo("#table tbody").attr("item_id", item.id);
             })
         }
-        //删除
-        $(document).on("click",".trash_btn",function(){
-            click_id=$(this).parent().parent().attr("item_id");
-            var name = $(this).parents("tr").find("td:eq(2)").text();
-            if(confirm("确定删除"+name+"这个课程计划吗？")){
-                $.ajax({
-                    url: 'deleteOffering?id='+click_id,
-                    type: 'get',
-                    success: function (result) {
-                        toPageNum(curPage);
-                        alert(result.extend.data);
-                    }
-                })
-            }
-        });
         //构建分页信息
         function build_page_info(result) {
             total = result.pages;
@@ -170,28 +143,38 @@
             $("#page_nav").append(nextLi, lastLi);
         }
 
-        //修改先决课程
-        $(document).on("click", ".edit_btn", function () {
+        //查看
+        $(document).on("click", ".check_student", function () {
             click_id = $(this).parent().parent().attr("item_id");
             $.ajax({
-                url: 'getAllCourses?id=' + click_id,
+                url: 'getSelectStudent?id=' + click_id,
                 type: 'get',
                 success: function (result) {
-                    $('#name_input').empty();
-                    var data = result.extend.data;
-                    if (result.code === 100) {
-                        $.each(data,function(){
-                            var optionEle = $("<option></option>").append(this.name).attr("value",this.id);
-                            optionEle.appendTo('#name_input');
-                        });
-                        $("#modal").modal({
-                            backdrop: "static"
-                        });
+                    if(result.code===200){
+                        alert("没有学生选此课");
+                        return;
                     }
+                    $('#table1 tbody').empty();
+                    console.log(result);
+                    build_tables1(result.extend.data);
+                    $("#modal").modal({
+                        backdrop: "static"
+                    });
                 }
             })
         });
-
+        //构建信息表
+        function build_tables1(result) {
+            $("#table1 tbody").empty();
+            $.each(result, function (index, item) {
+                var name = $("<td></td>").append(item.name);
+                var college = $("<td></td>").append(item.college.collegeName);
+                var address = $("<td></td>").append(item.address);
+                var birthday = $("<td></td>").append(item.birthday);
+                var phone = $("<td></td>").append(item.phone);
+                $("<tr></tr>").append(name, college,address,birthday, phone).appendTo("#table1 tbody").attr("item_id", item.id);
+            })
+        }
 
     </script>
 </div>

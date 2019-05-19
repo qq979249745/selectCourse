@@ -52,6 +52,21 @@ public class StudyController {
     }
     @RequestMapping("/modifyStudy/{studyId}")
     public String modifyStudy(@PathVariable Integer studyId){
+        System.out.println(studyId);
         return "/student/modifyStudy";
+    }
+    @RequestMapping("/deleteStudy")
+    @ResponseBody
+    public RestResponse deleteStudy(Integer id){
+        Student student = (Student) request.getSession().getAttribute("student");
+        Integer sId = student.getId();
+        return studyService.deleteStudy(id,sId)?RestResponse.success().add("data","删除成功"):RestResponse.fail().add("data","删除失败");
+    }
+    @RequestMapping("/submitStudy")
+    @ResponseBody
+    public RestResponse submitStudy(Integer id){
+        Student student = (Student) request.getSession().getAttribute("student");
+        String s = studyService.submitStudy(id, student);
+        return RestResponse.success().add("data",s);
     }
 }

@@ -38,7 +38,6 @@ public class CourseService {
             for (CourseOffering courseOffering : allCourseOffering) {
                 list.add(courseOffering.getCourseId());
             }
-
             courseExample.createCriteria().andIdNotIn(list);
         }
         return courseMapper.selectByExample(courseExample);

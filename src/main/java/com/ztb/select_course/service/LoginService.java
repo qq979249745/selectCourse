@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class LoginService {
     @Autowired
-    private StudentMapper studentMapper;
+    private StudentService studentService;
     @Autowired
     private ProfessorMapper professorMapper;
     @Autowired
@@ -54,7 +54,7 @@ public class LoginService {
                 StudentExample.Criteria sc = studentExample.createCriteria();
                 sc.andAccountEqualTo(user.getAccount());
                 sc.andPasswordEqualTo(user.getPassword());
-                List<Student> students = studentMapper.selectByExample(studentExample);
+                List<Student> students = studentService.getStudent(studentExample);
                 if (students.size()>0){
                     request.getSession().setAttribute("user",user);
                     request.getSession().setAttribute("student",students.get(0));

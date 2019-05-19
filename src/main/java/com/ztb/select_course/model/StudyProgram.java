@@ -7,6 +7,16 @@ public class StudyProgram {
 
     private Integer courseofferingId;
 
+    private CourseOffering courseOffering;
+
+    public CourseOffering getCourseOffering() {
+        return courseOffering;
+    }
+
+    public void setCourseOffering(CourseOffering courseOffering) {
+        this.courseOffering = courseOffering;
+    }
+
     private String state;
 
     public Integer getId() {

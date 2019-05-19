@@ -20,7 +20,6 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li th:class="${index}==0?'active':''"><a href="/student/study">制定学习计划</a></li>
-                    <li th:class="${index}==1?'active':''"><a href="/registrar/college">查询课程注册费用</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:text="${session.user.account}"></a></li>

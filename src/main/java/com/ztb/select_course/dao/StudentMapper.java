@@ -39,9 +39,9 @@ public interface StudentMapper {
 
     @Select({
         "select",
-        "s.id, account, password, name, college_id, s.address, birthday, phone ,college_name",
-        "from tb_student s join tb_college c on s.college_id=c.id",
-        "where s.id = #{id,jdbcType=INTEGER}"
+        "id, account, password, name, college_id, address, birthday, phone ",
+        "from tb_student",
+        "where id = #{id,jdbcType=INTEGER}"
     })
     @ResultMap("BaseResultMap")
     Student selectByPrimaryKey(Integer id);

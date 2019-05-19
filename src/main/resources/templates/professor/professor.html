@@ -21,7 +21,7 @@
                 <ul class="nav navbar-nav">
                     <li th:class="${index}==0?'active':''"><a href="/professor/courseOffering">制定课程计划表</a></li>
                     <li th:class="${index}==1?'active':''"><a href="/professor/modifyOffering">修改课程计划表</a></li>
-                    <li th:class="${index}==2?'active':''"><a href="/registrar/college">查看选课名单</a></li>
+                    <li th:class="${index}==2?'active':''"><a href="/professor/checkStudent">查看选课名单</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:text="${session.user.account}"></a></li>
